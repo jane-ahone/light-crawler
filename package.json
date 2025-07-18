@@ -1,16 +1,21 @@
 {
   "name": "lightcrawler",
   "version": "1.0.0",
-  "description": "crawls myeasylight site to send notofications to admin in case of light seizure",
+  "description": "crawls myeasylight site to send notifications to admin in case of light seizure",
   "main": "index.mjs",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.mjs"
   },
   "author": "jane-ahone",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "nodemailer": "^7.0.5",
+    "puppeteer": "^24.11.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
