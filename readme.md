@@ -81,7 +81,7 @@ Configure `.github/workflows/daily.yml` to run daily or manually with `workflow_
 ## 🧪 Run Manually
 
 ```bash
-node helper/sendOutageEmail.js
+node index.mjs
 ```
 
 ---
