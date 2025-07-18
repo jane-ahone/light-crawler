@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import puppeteer from "puppeteer";
 import "dotenv/config";
-import email from "./helper/email.mjs";
+import email, { sendErrorEmail } from "./helper/email.mjs";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,32 +21,34 @@ app.use(cors());
 
   await page.select("select#regions", "10");
 
-  const res = await page.waitForSelector("div#contentdata > .outage", {
-    timeout: 100000,
-  });
-
-  console.log('Result',res)
-
-  const outageData = await page.evaluate(() => {
-    return Array.from(
-      document.querySelectorAll("div#contentdata > .outage")
-    ).map((outage) => {
-      return {
-        quartier: outage.querySelector(".quartier")?.innerText || "",
-        ville: outage.querySelector(".ville")?.innerText || "",
-        observations: outage.querySelector(".observations")?.innerText || "",
-        date: outage.querySelector(".prog_date")?.innerText || "",
-      };
+  try {
+    const res = await page.waitForSelector("div#contentdata > .outage", {
+      timeout: 100000,
     });
-  });
+    const outageData = await page.evaluate(() => {
+      return Array.from(
+        document.querySelectorAll("div#contentdata > .outage")
+      ).map((outage) => {
+        return {
+          quartier: outage.querySelector(".quartier")?.innerText || "",
+          ville: outage.querySelector(".ville")?.innerText || "",
+          observations: outage.querySelector(".observations")?.innerText || "",
+          date: outage.querySelector(".prog_date")?.innerText || "",
+        };
+      });
+    });
 
-  // Sending the email to myself in case of outage
+    // Sending the email to myself in case of outage
 
-  if (outageData) {
-    console.log("Outage data", outageData);
-    email(outageData);
-  } else {
-    console.log("No outage");
+    if (outageData) {
+      console.log("Outage data", outageData);
+      email(outageData);
+    } else {
+      console.log("No outage");
+    }
+  } catch (error) {
+    console.log("Error sweetie");
+    sendErrorEmail();
   }
 
   // Closes the browser and all of its pages
