@@ -68,7 +68,7 @@ const sendOutageEmail = async (emailTemplate) => {
     });
 
     console.log("Message sent: %s", info.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+   
   } catch (err) {
     console.error("Error while sending mail", err);
   }
@@ -80,7 +80,7 @@ export const sendErrorEmail = async () => {
       from: '"LightCrawler Info" <team@example.com>',
       to: `${process.env.SMTP_RECEIVER}`,
       subject: "Bug alerttt",
-      text: "Your code didn't run today ohh",
+      text: "Your code didn't run today ohh or no outage today oh",
     });
 
     console.log("Message sent: %s", info.messageId);
