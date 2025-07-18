@@ -12,7 +12,10 @@ app.use(cors());
 
 (async () => {
   // Initiate the browser
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
 
   // Create a new page with the default browser context
   const page = await browser.newPage();
