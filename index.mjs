@@ -23,7 +23,7 @@ app.use(cors());
   await page.goto(url);
 
   // Select Southwest region
-  await page.select("select#regions", "9");
+  await page.select("select#regions", "10");
 
   // Await results and process it
   for (let index = 0; index < 1; index++) {
