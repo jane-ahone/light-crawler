@@ -5,10 +5,8 @@
 ## 📦 Features
 
 - 🕸 Scrapes outage data by selected region/town
-- 📬 Sends daily emails with structured outage information
+- 📬 Sends daily emails when there is a planned outage with structured outage information of
 - 🔄 Schedules scraping and emailing automatically
-- 📁 Saves HTML snapshots (debugging or archiving)
-- 🧪 Supports both HTML and plain-text email formats
 
 ---
 
@@ -66,17 +64,12 @@ Time: 07H00–17H00
 
 ---
 
-## 📅 Scheduling
+## 📧 Sample Output
 
-### 🔁 Option 1: `node-cron`
-
-You can run the app once per day using `node-cron`.
-
-### 🔁 Option 2: GitHub Actions
-
-Configure `.github/workflows/daily.yml` to run daily or manually with `workflow_dispatch`.
+![Image of lightcrawler email](assets/lightcrawler-output.jpg)
 
 ---
+
 
 ## 🧪 Run Manually
 
