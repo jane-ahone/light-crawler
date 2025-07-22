@@ -22,39 +22,47 @@ app.use(cors());
 
   await page.goto(url);
 
-  // Select Southwest region
+  // Select Southwest region; its value is 10 on the website
   await page.select("select#regions", "10");
+  // Check if there is no outage
+  try {
+    await page.waitForSelector("div#contentdata > .no_prog", {
+      timeout: 100000,
+    });
 
-  // Await results and process it
-  for (let index = 0; index < 1; index++) {
-    try {
-      await page.waitForSelector("div#contentdata > .outage", {
-        timeout: 100000,
-      });
-      const outageData = await page.evaluate(() => {
-        return Array.from(
-          document.querySelectorAll("div#contentdata > .outage")
-        ).map((outage) => {
-          return {
-            quartier: outage.querySelector(".quartier")?.innerText || "",
-            ville: outage.querySelector(".ville")?.innerText || "",
-            observations:
-              outage.querySelector(".observations")?.innerText || "",
-            date: outage.querySelector(".prog_date")?.innerText || "",
-          };
+    process.exit(0);
+  } catch (error) {
+    // If there is an outage an error is thrown and the catch section runs
+    //For loop enables a retry policy of 3
+    for (let index = 0; index < 1; index++) {
+      try {
+        await page.waitForSelector("div#contentdata > .outage", {
+          timeout: 100000,
         });
-      });
+        const outageData = await page.evaluate(() => {
+          return Array.from(
+            document.querySelectorAll("div#contentdata > .outage")
+          ).map((outage) => {
+            return {
+              quartier: outage.querySelector(".quartier")?.innerText || "",
+              ville: outage.querySelector(".ville")?.innerText || "",
+              observations:
+                outage.querySelector(".observations")?.innerText || "",
+              date: outage.querySelector(".prog_date")?.innerText || "",
+            };
+          });
+        });
 
-      // Sending the email to myself in case of outage
+        // Sending the email to myself in case of outage
 
-      if (outageData) {
-        email(outageData);
-      } else {
-        console.log("No outage");
+        if (outageData) {
+          email(outageData);
+        }
+        break;
+      } catch (error) {
+        // If another error is thrown, then there is an error
+        sendErrorEmail();
       }
-      break;
-    } catch (error) {
-      sendErrorEmail();
     }
   }
 

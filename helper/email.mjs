@@ -12,6 +12,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Generates the html template table with the list of outage locations
 const generateOutageEmailHtml = (region, outages = []) => {
   const outageRows = outages
     .map(
@@ -57,35 +58,39 @@ const generateOutageEmailHtml = (region, outages = []) => {
   `;
 };
 
+// Sends the email to admin about planned outage
 const sendOutageEmail = async (emailTemplate) => {
   try {
     const info = await transporter.sendMail({
-      from: '"LightCrawler Info" <team@example.com>',
+      from: '"LightCrawler Info"',
       to: `${process.env.SMTP_RECEIVER}`,
       subject: "Omo, bulb go dark oh",
-      text: "Hello world?",
       html: emailTemplate,
     });
 
     console.log("Message sent: %s", info.messageId);
-   
   } catch (err) {
     console.error("Error while sending mail", err);
+  } finally {
+    process.exit(0);
   }
 };
 
+// Informs the admin of an error
 export const sendErrorEmail = async () => {
   try {
     const info = await transporter.sendMail({
       from: '"LightCrawler Info" <team@example.com>',
       to: `${process.env.SMTP_RECEIVER}`,
-      subject: "Bug alerttt",
-      text: "Your code didn't run today ohh or no outage today oh",
+      subject: "Bug alert",
+      text: "Your code didn't run today ohh",
     });
 
     console.log("Message sent: %s", info.messageId);
   } catch (err) {
     console.error("Error while sending mail", err);
+  } finally {
+    process.exit(0);
   }
 };
 
