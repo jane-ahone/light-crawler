@@ -14,7 +14,7 @@
 
 1. Launches a headless browser using Puppeteer
 2. Navigates to the Eneo iframe or outage page
-3. Selects a specific region (e.g., `YAOUNDE`)
+3. Selects a specific region (e.g., `SouthWest`)
 4. Extracts all listed outages (town, neighborhood, reason, date, time)
 5. Sends a formatted HTML email to your inbox
 
@@ -69,7 +69,6 @@ Time: 07H00–17H00
 ![Image of lightcrawler email](assets/lightcrawler-output.jpg)
 
 ---
-
 
 ## 🧪 Run Manually
 
